@@ -34,7 +34,7 @@
 :set MyLCDPIN "1590";
 :set MyMikroTikUser "test@example.net";  # your MikroTik username for the cloud backup
 :set MyMikroTikPassword "38592-TEST-test-82384";  # your MikroTik password for the cloud backup
-:set MyMikroTikBackupPassword "38592-test-TEST-82384";  # password for the encrypted cloud backup file, see https://help.mikrotik.com/docs/display/ROS/Backup
+:set MyMikroTikBackupPassword "38592-test-TEST-82384";  # password for the encrypted cloud backup file, see https://help.mikrotik.com/docs/display/ROS/Cloud#Cloud-Cloudbackup
 :set hasLCD "0";  # 0: device has no LCD screen, 1: device has LCD screen
 :set hasSwOS "0";  # 0: device is RouterOS only, 1: device is dual-boot with SwOS
 :set hasPoEOut "0";  # 0: device does not have PoE out, 1: device has PoE out
