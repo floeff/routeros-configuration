@@ -11,9 +11,6 @@ I published a series of blogposts and one article on how to use MikroTik RouterO
 
 Feedback, suggestions, improvements and bug reports always welcome!
 
-## Files
-* The file *base.rsc* provides a mostly device-independent base configuration.
-
 ## Limitations
 Although files have the RSC suffix for syntax highlighting, they are **not** suited for automated deployment. You can copy-paste individual configuration lines on the console, but the files have **not been tested for unattended use**. I might work on this, and/or Ansible scripts, at a later stage. Any help is welcome!
 
