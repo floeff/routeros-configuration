@@ -20,5 +20,15 @@ Although files have the RSC suffix for syntax highlighting, they are **not** sui
 ## Required software
 The scripts are based on RouterOS 7.x. The older and currently LTS version 6.x has a slightly different syntax, against which the scripts have not been tested against.
 
+### Upgrading to RouterOS 7.x
+
+To upgrade from RouterOS 6.x to 7.x, you can use the following commands:
+```
+/system package update set channel=upgrade
+/system package update check-for-updates
+/system package update download
+/system reboot
+```
+
 ## Demo system
 MikroTik provides two demo systems at https://demo.mt.lv and https://demo2.mt.lv which you can use for testing. Not all features of the scripts might be supported.
