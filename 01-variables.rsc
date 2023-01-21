@@ -29,7 +29,7 @@
 :set MyNetwork "192.168.0.0/16";  # the subnet for access to management services
 :set MyUsername "jjdoe";  # the username to replace the admin user with
 :set MyFullname "Jane and John Doe";
-:set MyDeviceType "0";  # 0: switch, 1: router without wifi, 2: access point
+:set MyDeviceType "0";  # 0: switch, 1: router without wifi, 2: access point or combined device
 :set MyRoMONSecret "82384-test-TEST-38592";
 :set MyLCDPIN "1590";
 :set MyMikroTikUser "test@example.net";  # your MikroTik username for the cloud backup
