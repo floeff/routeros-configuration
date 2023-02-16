@@ -36,13 +36,13 @@
 
 # on switch, create bridge and add all ports
 :if ($MyDeviceType="0") do={
-/interface/bridge/add name=bridge1
+/interface/bridge/add name=bridge1 admin-mac=[/interface/ethernet/get value-name=mac-address [find where name="ether1"]]
 :foreach i in=[/interface/ethernet/find] do={ /interface/bridge/port/add bridge=bridge1 interface=$i }
 }
 
 # on router, create bridge and add all ports, except uplink ether1
 :if ($MyDeviceType="1") do={
-/interface/bridge/add name=bridge1
+/interface/bridge/add name=bridge1 admin-mac=[/interface/ethernet/get value-name=mac-address [find where name="ether2"]]
 :foreach i in=[/interface/find where name!="ether1"] do={ /interface/bridge/port/add bridge=bridge1 interface=$i }
 }
 
