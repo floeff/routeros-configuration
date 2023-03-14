@@ -81,7 +81,7 @@
 :set hasPoEOut "1";
 }
 
-:if ([/system/routerboard/get value-name=model]="951G-2HnD") do={
+:if ([/system/routerboard/get value-name=model]="RB951G-2HnD") do={
 :set MyDeviceType "2";
 #no LCD
 #no SwOS
