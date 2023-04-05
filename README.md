@@ -15,7 +15,7 @@ Feedback, suggestions, improvements and bug reports always welcome!
 Although files have the RSC suffix for syntax highlighting, they are **not** suited for automated deployment. You can copy-paste individual configuration lines on the console, but the files have **not been tested for unattended use**. I might work on this, and/or Ansible scripts, at a later stage. Any help is welcome!
 
 ## Required software
-The scripts are based on RouterOS 7.x. The older and currently LTS version 6.x has a slightly different syntax, against which the scripts have not been tested against.
+The scripts are based on RouterOS 7.x. The older and currently LTS version 6.x has a slightly different syntax, against which the scripts have not been tested.
 
 ### Upgrading to RouterOS 7.x
 
