@@ -99,7 +99,7 @@
 /ip ssh/set allow-none-crypto=no
 :if ($MyDeviceType="0" || $MyDeviceType="2") do={ /ip/ssh/set forwarding-enabled=no }
 :if ($MyDeviceType="1") do={ /ip/ssh/set forwarding-enabled=local }
-/ip/ssh/set host-key-size=4096
+/ip/ssh/set host-key-type=ed25519
 /ip/ssh/regenerate-host-key
 
 
