@@ -130,3 +130,8 @@
 # save default configuration for reference
 
 /system/default-configuration/print file=([/system/identity/get value-name=name]."-default")
+
+
+# check installation integrity
+
+/system/check-installation
