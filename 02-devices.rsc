@@ -24,6 +24,20 @@
 :set hasPoEOut "1";
 }
 
+:if ([/system/routerboard/get value-name=model]="CRS354-48P-4S+2Q+") do={
+:set MyDeviceType "0";
+#no LCD
+:set hasSwOS "1";
+:set hasPoEOut "1";
+}
+
+:if ([/system/routerboard/get value-name=model]="CRS326-24S+2Q+") do={
+:set MyDeviceType "0";
+#no LCD
+:set hasSwOS "1";
+:set hasPoEOut "0";
+}
+
 
 # routers
 
