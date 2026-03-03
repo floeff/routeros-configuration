@@ -19,13 +19,15 @@
 :global hasSwOS;
 :global hasPoEOut;
 :global VLANType;
+:global RouterOSVersion [/system/resource/get version];
+:global RouterOSFlavor;
 
 
 # define variables
 
 :set MyHostname "gateway";
 :set MyDomain "intranet";
-:set MySubnet "192.168.19";  # the actual device subnet in the main (V)LAN
+:set MySubnet "192.168.18";  # the actual device subnet in the main (V)LAN
 :set MyNetwork4 "192.168.0.0/16";  # the IPv4 subnet for access to management services
 :set MyNetwork6 "fe80::/10";  # the IPv6 subnet for access to management services
 :set MyUsername "jjdoe";  # the username to replace the admin user with
@@ -39,3 +41,4 @@
 :set hasSwOS "0";  # 0: device is RouterOS only, 1: device is dual-boot with SwOS
 :set hasPoEOut "0";  # 0: device does not have PoE out, 1: device has PoE out
 :set VLANType "0";  # type of VLAN configuration, see https://help.mikrotik.com/docs/display/ROS/Basic+VLAN+switching
+:if ( $RouterOSVersion ~"7.12") do={ set RouterOSFlavor "old" } else={ set RouterOSFlavor "new" }
