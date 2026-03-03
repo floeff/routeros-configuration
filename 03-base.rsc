@@ -26,41 +26,59 @@
 :if ($hasLCD="1") do={ /lcd/set enabled=no backlight-timeout=5m read-only-mode=yes touch-screen=disabled }
 
 
-# create interface lists
+# create interface list
 
-/interface/list/add name=layer2-wan
-/interface/list/add name=layer2-lan exclude=layer2-wan
+/interface/list/add name=management
 
 
 # configure ethernet interfaces and create bridges
 
 # on switch, create bridge and add all ports
+
 :if ($MyDeviceType="0") do={
 /interface/bridge/add name=bridge1 auto-mac=no admin-mac=[/interface/ethernet/get value-name=mac-address [find where name="ether1"]]
 :foreach i in=[/interface/ethernet/find] do={ /interface/bridge/port/add bridge=bridge1 interface=$i }
 }
 
+#remove physical management port from bridge
+
+:if ([/system/routerboard/get value-name=model]="CRS354-48P-4S+2Q+") do={ /interface/bridge/port/remove [find interface="ether49"] }
+:if ([/system/routerboard/get value-name=model]="CRS326-24S+2Q+") do={ /interface/bridge/port/remove [find interface="ether1"] }
+
 # on router, create bridge and add all ports, except uplink ether1
+
 :if ($MyDeviceType="1") do={
 /interface/bridge/add name=bridge1 auto-mac=no admin-mac=[/interface/ethernet/get value-name=mac-address [find where name="ether2"]]
 :foreach i in=[/interface/find where name!="ether1"] do={ /interface/bridge/port/add bridge=bridge1 interface=$i }
 }
 
-# on switch and access point, configure ethernet interfaces and add to interface list
+# on switch and access point, configure ethernet interfaces
+# double check in case of disconnect!
+
 :if ($MyDeviceType="0" || $MyDeviceType="2") do={
 /interface/ethernet/set rx-flow-control=auto tx-flow-control=auto loop-protect=on [find]
-:foreach i in=[/interface/find] do={ /interface/list/member/add list=layer2-lan interface=$i }
 }
 
-# on router, configure ethernet interfaces and add to interface list, uplink ether1 is in WAN list
+# on router, configure ethernet interfaces
+
 :if ($MyDeviceType="1") do={
-/interface/ethernet/set rx-flow-control=auto tx-flow-control=auto loop-protect=on [find name!=ether1]
-:foreach i in=[/interface/find where name!="ether1"] do={ /interface/list/member/add list=layer2-lan interface=$i }
-/interface/list/member/add list=layer2-wan interface=ether1
+/interface/ethernet/set rx-flow-control=auto tx-flow-control=auto loop-protect=on [find where name!="ether1"]
 }
+
+
+# verify all relevant bridge ports are hardware-accelerated
+
+/interface/bridge/port/print where !hw=yes
+
+
+# add bridge to management interface, can be changed later on for VLAN
+
+/interface/list/member/add list=management interface=bridge1
+#ether1 for WIFI!
 
 
 # set hostname
+# recreate certificates after name change!
 
 /system/identity/set name=$MyHostname
 :if ($hasSwOS="1") do={ /system/swos/set identity=$MyHostname }
@@ -80,13 +98,14 @@
 /tool/romon/port/set forbid=no [find]
 :if ($MyDeviceType="1") do={ /tool/romon/port/add interface=ether1 forbid=yes disabled=no }
 /tool/romon/set enabled=yes
+## /tool/romon/set id=[/interface/bridge/get value-name=mac-address [find where name="bridge1"]]
 
 
 # restrict management services to LAN, but allow SSH from WAN interface
 
-/ip/neighbor/discovery-settings/set discover-interface-list=layer2-lan
-/tool/mac-server/set allowed-interface-list=layer2-lan
-/tool/mac-server/mac-winbox/set allowed-interface-list=layer2-lan
+/ip/neighbor/discovery-settings/set discover-interface-list=management
+/tool/mac-server/set allowed-interface-list=management
+/tool/mac-server/mac-winbox/set allowed-interface-list=management
 :if ($MyDeviceType="0" || $MyDeviceType="2") do={ /ip/service/set address="$MyNetwork4,$MyNetwork6" [find] }
 :if ($MyDeviceType="1") do={ /ip/service/set address="$MyNetwork4,$MyNetwork6" [find name!=ssh] }
 /ip/settings/set tcp-syncookies=yes rp-filter=strict
@@ -96,7 +115,6 @@
 # tighten SSH configuration and enable strong crypto
 
 /ip/ssh/set strong-crypto=yes
-/ip ssh/set allow-none-crypto=no
 :if ($MyDeviceType="0" || $MyDeviceType="2") do={ /ip/ssh/set forwarding-enabled=no }
 :if ($MyDeviceType="1") do={ /ip/ssh/set forwarding-enabled=local }
 /ip/ssh/set host-key-type=ed25519
@@ -125,11 +143,6 @@
 /tool/graphing/queue add allow-address=$MyNetwork6
 /tool/graphing/resource add allow-address=$MyNetwork4
 /tool/graphing/resource add allow-address=$MyNetwork6
-
-
-# save default configuration for reference
-
-/system/default-configuration/print file=([/system/identity/get value-name=name]."-default")
 
 
 # check installation integrity
